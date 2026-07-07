@@ -12,11 +12,7 @@ export default function HeroContainer() {
       <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center bg-black">
         
         <div 
-          className="absolute inset-0 bg-[url('/mahares-sf.jfif')] bg-contain bg-no-repeat bg-center opacity-100 md:hidden"
-        />
-
-        <div 
-          className="absolute inset-0 bg-[url('/mahares-bg.jfif')] bg-cover bg-center opacity-100 hidden md:block"
+          className="absolute inset-0 bg-[url('/images/mahares-sf.jpg')] bg-contain bg-no-repeat bg-center md:bg-[url('/images/mahares-bg.jfif')] md:bg-cover opacity-100"
         />
         
         <div className="absolute inset-0 bg-black/45 md:bg-black/25 backdrop-blur-[0.5px]" />
