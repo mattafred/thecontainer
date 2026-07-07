@@ -57,13 +57,13 @@ export default function TheContainerSite() {
             {/* ILLUSTRATION MODE DESKTOP / LAPTOP */}
             <div 
               className="absolute inset-0 hidden md:block bg-cover bg-center opacity-40 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/bg-desktop.jpg')" }} 
+              style={{ backgroundImage: "url('/images/bg-desktop.jpg')" }} 
             />
 
             {/* ILLUSTRATION MODE SMARTPHONE */}
             <div 
               className="absolute inset-0 block md:hidden bg-cover bg-center opacity-45 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/bg-mobile.jpg')" }} 
+              style={{ backgroundImage: "url('/images/bg-mobile.jpg')" }} 
             />
 
             {/* Overlay dégradé pour garantir la lisibilité du texte */}
