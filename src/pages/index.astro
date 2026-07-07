@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroContainer from '../components/HeroContainer';
+import InteractiveMap from '../components/InteractiveMap';
+---
+
+<Layout title="The Container | Eat & Drink - Mahares">
+	<main>
+		<!-- Section 1 : Effet Wow Ouverture Container -->
+		<HeroContainer client:load />
+
+		<!-- Section 2 : Menu "Main Cargo" basé sur ton image -->
+		<section id="menu" class="py-20 bg-zinc-950 px-4 border-t border-zinc-900">
+			<div class="max-w-3xl mx-auto">
+				<div class="border-2 border-dashed border-zinc-800 p-6 sm:p-12 bg-zinc-900/40 font-mono text-sm">
+					
+					{/* Header Industriel du Menu */}
+					<div class="flex justify-between border-b border-zinc-800 pb-4 mb-8 text-[11px] text-zinc-500">
+						<div>SYS.ID: TC-RED-06</div>
+						<div class="text-center font-bold text-amber-500">MAIN CARGO // LES BURGERS</div>
+						<div>[SEC.01]</div>
+					</div>
+
+					{/* Les Burgers */}
+					<div class="space-y-6">
+						<div class="flex justify-between items-center">
+							<div>
+								<span class="font-bold text-white block">CHICKEN BURGER</span>
+								<span class="text-xs text-zinc-500">Served Fresh & Hot</span>
+							</div>
+							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">12.00 DT</div>
+						</div>
+						<div class="flex justify-between items-center">
+							<div>
+								<span class="font-bold text-white block">CHEESEBURGER</span>
+							</div>
+							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">13.00 DT</div>
+						</div>
+						<div class="flex justify-between items-center">
+							<div>
+								<span class="font-bold text-white block">BACON BURGER</span>
+							</div>
+							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">15.00 DT</div>
+						</div>
+						<div class="flex justify-between items-center bg-red-950/20 border border-red-900/40 p-3">
+							<div>
+								<span class="font-bold text-red-400 block">LE DOUBLE [HEAVY LOAD]</span>
+								<span class="text-[11px] text-zinc-400">Double Steak + Double Fromage</span>
+							</div>
+							<div class="text-red-400 font-bold border border-red-500/30 px-2 py-1 bg-red-500/10">18.00 DT</div>
+						</div>
+					</div>
+
+					{/* Suppléments */}
+					<div class="mt-12 pt-6 border-t border-zinc-800">
+						<p class="text-xs text-zinc-400 mb-4 font-bold uppercase tracking-wider">+ EXTRA ACCESSORIES // SUPPLÉMENTS</p>
+						<div class="grid grid-cols-2 gap-4 text-xs">
+							<div class="flex justify-between text-zinc-300"><span>SUPPL. CHEDDAR</span> <span class="text-amber-400">+2.00 DT</span></div>
+							<div class="flex justify-between text-zinc-300"><span>SUPPL. STEAK</span> <span class="text-amber-400">+5.00 DT</span></div>
+						</div>
+					</div>
+
+					{/* Lien vers Take.app externe */}
+					<div class="mt-12 text-center">
+						<p class="text-xs text-zinc-500 mb-4">Scannez le QR Code sur table ou cliquez ci-dessous pour commander directement via WhatsApp</p>
+						<a 
+							href="https://take.app/fr/THECONTAINER" 
+							target="_blank" 
+							rel="noopener noreferrer"
+							class="inline-block bg-zinc-100 hover:bg-amber-500 text-black px-8 py-4 font-bold uppercase tracking-wider text-xs transition-colors"
+						>
+							Commandez en Ligne (Take.app)
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section 3 : Localisation avec radar pulsé -->
+		<InteractiveMap client:visible />
+	</main>
+
+	{/* Footer réglementaire industriel */}
+	<footer class="bg-zinc-950 border-t border-zinc-900 py-6 text-center text-[10px] font-mono text-zinc-600 tracking-widest uppercase">
+		▲ DO NOT STACK // SERVED FRESH & HOT DIRECT FROM THE CONTAINER
+	</footer>
+</Layout>
