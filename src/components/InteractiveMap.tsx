@@ -1,141 +1,179 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function InteractiveMap() {
   const [isNavigating, setIsNavigating] = useState(false);
+  const [systemLog, setSystemLog] = useState("⚡ STANDBY // AWAITING TARGET TRIANGULATION");
+  const [pulseCount, setPulseCount] = useState(3060);
 
-  // Coordonnées réelles approximatives de la Plage de Maharès pour le bouton GPS
   const googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=34.5228,10.5042";
+
+  // Simulateur de flux de données tactiques en direct
+  useEffect(() => {
+    const logs = [
+      "📡 CONNECTING TO SATELLITE MS-3060...",
+      "🔓 SECURE LINK ESTABLISHED // COSTEVAL_NET",
+      "🌊 SEA STATUS: CALM // WIND: 8 KNOTS E",
+      "🔥 BURGER CORE TEMPERATURE: NOMINAL",
+      "⚓ CARGO LOADING ZONE: MAHARES BEACH DETECTED",
+      "🎯 TARGET LOCKED // THE CONTAINER IS READY",
+      "🍟 CRISPY FRY PACK DEPLOYMENT: IN QUEUE"
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      setSystemLog(logs[i]);
+      i = (i + 1) % logs.length;
+      setPulseCount(prev => prev + Math.floor(Math.random() * 5) - 2);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="localisation" class="relative min-h-screen w-full bg-zinc-950 py-20 px-4 flex flex-col items-center justify-center overflow-hidden">
-      {/* Grille de fond typée "Radar Militaire / Satellite" */}
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.08)_0%,transparent_60%)]" />
+      {/* Grille de fond millimétrée */}
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,#141417_1px,transparent_1px),linear-gradient(to_bottom,#141417_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-40" />
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.06)_0%,transparent_60%)]" />
 
       {/* En-tête Tactique */}
-      <div class="relative z-10 max-w-4xl w-full text-center mb-12">
-        <div class="inline-flex items-center gap-2 px-3 py-1 border border-amber-500/30 bg-amber-500/10 text-amber-400 font-mono text-[10px] uppercase tracking-[0.2em] mb-4">
+      <div class="relative z-10 max-w-4xl w-full text-center mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 border border-amber-500/30 bg-amber-500/5 text-amber-400 font-mono text-[9px] uppercase tracking-[0.25em] mb-4">
           <span class="h-2 w-2 rounded-full bg-amber-500 animate-ping" />
-          Tactical Navigation System // Online
+          SYSTEM STATUS: ULTRA-OPERATIONAL // MH-3060
         </div>
-        <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white">
+        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
           CARGAISON REPÉRÉE À <span class="text-amber-500">MAHARÈS</span>
         </h2>
-        <p class="text-zinc-400 text-sm mt-2 font-mono uppercase tracking-widest">
-          Zone Côtière // Route de la Mer — Tunisie
+        <p class="text-zinc-500 text-xs mt-2 font-mono uppercase tracking-widest">
+          Coordinates Terminal // Tactical Map v2.4
         </p>
       </div>
 
       {/* Le conteneur de la carte immersive */}
-      <div class="relative z-10 w-full max-w-4xl aspect-[16/10] sm:aspect-video bg-zinc-950 border-2 border-zinc-800 rounded-none shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden flex items-center justify-center">
+      <div class="relative z-10 w-full max-w-4xl aspect-[16/10] sm:aspect-video bg-black border-2 border-zinc-800 rounded-none shadow-[0_0_60px_rgba(245,158,11,0.03)] overflow-hidden flex items-center justify-center">
         
-        {/* Lignes de repères et visée de ciblage */}
-        <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-800/40 pointer-events-none" />
-        <div class="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-800/40 pointer-events-none" />
+        {/* Réticule de visée central */}
+        <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-900 pointer-events-none" />
+        <div class="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-900 pointer-events-none" />
 
-        {/* Tracé de la Côte de Maharès (SVG Vectoriel) avec effet néon */}
+        {/* ================= NOUVEAU : EFFET RADAR SONAR ROTATIF ================= */}
+        <div class="absolute left-[62%] top-[54.6%] -translate-x-1/2 -translate-y-1/2 w-[150%] aspect-square pointer-events-none overflow-hidden">
+          <div class="w-full h-full animate-[spin_8s_linear_infinite] opacity-20" style={{ backgroundImage: 'conic-gradient(from 0deg, rgba(245,158,11,0.4) 0deg, rgba(245,158,11,0) 90deg, transparent 360deg)' }} />
+        </div>
+
+        {/* Tracé Topographique de la Côte de Maharès (SVG complexe) */}
         <svg class="absolute inset-0 w-full h-full text-zinc-900 pointer-events-none" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Ligne de côte stylisée */}
-          <path d="M 150 -50 Q 250 120 400 180 T 650 320 T 900 500" stroke="#27272a" strokeWidth="3" strokeDasharray="8 4" />
-          <path d="M 150 -50 Q 250 120 400 180 T 650 320 T 900 500" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.15" />
-          <text x="520" y="220" fill="#3f3f46" class="text-[10px] font-mono tracking-widest uppercase">Mer Méditerranée</text>
+          <path d="M 50 -100 Q 180 80 320 120 T 550 240 T 680 380 T 900 600" stroke="#1f1f23" strokeWidth="4" />
+          <path d="M 50 -100 Q 180 80 320 120 T 550 240 T 680 380 T 900 600" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.1" />
+          
+          {/* Lignes concentriques d'isobathes (profondeur marine) */}
+          <path d="M 90 -100 Q 220 100 360 140 T 590 260 T 720 400" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.03" />
+          <text x="600" y="160" fill="#27272a" class="text-[9px] font-mono tracking-[0.3em] uppercase">GOLFE DE GABÈS // MEDITERRANEE</text>
         </svg>
 
-        {/* ================= EFFET WOW : L'ITINÉRAIRE ANIMÉ (SVG) ================= */}
+        {/* Tracé d'itinéraire laser pointillé */}
         <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 450" fill="none">
-          {/* Ligne d'itinéraire pointillée en arrière-plan */}
-          <path id="route-line" d="M 100 80 L 280 150 L 410 290 L 496 246" stroke="#3f3f46" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 4" />
+          <path id="route-line" d="M 120 60 L 260 130 L 440 270 L 496 246" stroke="#27272a" strokeWidth="1.5" strokeDasharray="5 5" />
           
-          {/* Ligne d'itinéraire lumineuse animée au clic */}
+          {/* Ligne laser réactive */}
           <motion.path 
-            d="M 100 80 L 280 150 L 410 290 L 496 246" 
+            d="M 120 60 L 260 130 L 440 270 L 496 246" 
             stroke="#f59e0b" 
             strokeWidth="2" 
             strokeLinecap="round" 
             strokeLinejoin="round"
             initial={{ pathLength: 0 }}
-            animate={isNavigating ? { pathLength: 1 } : { pathLength: [0, 0.4, 0.4, 0] }}
-            transition={isNavigating ? { duration: 2, ease: "easeInOut" } : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            animate={isNavigating ? { pathLength: 1 } : { pathLength: [0, 0.35, 0.35, 0] }}
+            transition={isNavigating ? { duration: 2, ease: "easeInOut" } : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
         </svg>
 
-        {/* Point de Départ Intermédiaire (ex: Entrée de Ville / Sfax) */}
-        <div class="absolute left-[12.5%] top-[17.7%] flex items-center gap-2 font-mono text-[9px] text-zinc-500">
-          <span class="h-1.5 w-1.5 bg-zinc-700 rounded-full" />
-          <span>ROUTE GP1 // INBOUND</span>
+        {/* Vecteur GP1 */}
+        <div class="absolute left-[15%] top-[13%] flex items-center gap-2 font-mono text-[9px] text-zinc-600">
+          <span class="h-1 w-1 bg-zinc-800 rounded-full" />
+          <span>INBOUND // GP1 SUITE</span>
         </div>
 
-        {/* Graphiques Technologiques "Maharès 3060 Art Zone" */}
-        <div class="absolute left-[51%] top-[64.4%] flex flex-col items-start z-10 font-mono text-[9px] text-zinc-400">
-          <div class="flex items-center gap-1.5">
-            <div class="h-2 w-2 bg-blue-500/40 border border-blue-500 rounded-none animate-pulse" />
-            <span class="font-black text-blue-400">MAHARÈS 3060 // ART HUBS</span>
+        {/* NOUVEAU : Indicateur Graphique Spécifique Zone Artistique Mahares 3060 */}
+        <div class="absolute left-[54%] top-[65%] flex flex-col items-start z-10 font-mono text-[9px]">
+          <div class="flex items-center gap-1.5 bg-zinc-950/80 px-1.5 py-0.5 border border-zinc-800 text-zinc-400">
+            <span class="h-1.5 w-1.5 bg-amber-500 rounded-none animate-pulse" />
+            <span>M-3060 ART SECTOR</span>
           </div>
-          <div class="w-[1px] h-6 bg-blue-500/30 ml-1.5" />
+          <div class="w-[1px] h-5 border-l border-dashed border-zinc-700 ml-2" />
         </div>
 
-        {/* Cercles de Scanners Radar Pulsés */}
+        {/* Ondes Radar Pulsées */}
         <div class="absolute left-[62%] top-[54.6%] flex items-center justify-center pointer-events-none">
-          {[1, 2, 3].map((index) => (
+          {[1, 2].map((index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0.4, scale: 0.5 }}
-              animate={{ opacity: 0, scale: 2.2 }}
-              transition={{ duration: 3, repeat: Infinity, delay: index * 1, ease: "easeOut" }}
-              class="absolute h-32 w-32 rounded-full border border-amber-500/40"
+              initial={{ opacity: 0.5, scale: 0.6 }}
+              animate={{ opacity: 0, scale: 2 }}
+              transition={{ duration: 4, repeat: Infinity, delay: index * 2, ease: "linear" }}
+              class="absolute h-40 w-40 rounded-full border border-amber-500/20"
             />
           ))}
         </div>
 
-        {/* MARQUEUR FINAL : THE CONTAINER */}
+        {/* MARQUEUR GEOCIBLE : THE CONTAINER */}
         <div class="absolute left-[62%] top-[54.6%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-20">
           <motion.div 
-            animate={{ y: [0, -6, 0] }}
+            animate={{ y: [0, -4, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            class="bg-red-700 border-2 border-red-500 text-[10px] font-mono px-2.5 py-1 shadow-[0_0_15px_rgba(185,28,28,0.5)] font-black text-white whitespace-nowrap"
+            class="bg-zinc-950 border-2 border-amber-500 text-amber-500 text-[10px] font-mono px-3 py-1 shadow-[0_0_20px_rgba(245,158,11,0.2)] font-black uppercase tracking-wider whitespace-nowrap"
           >
-            ⚓ THE CONTAINER
+            📦 THE CONTAINER
           </motion.div>
-          <div class="w-2.5 h-2.5 bg-amber-500 rounded-full mt-1.5 shadow-[0_0_20px_#f59e0b] border border-black" />
+          <div class="w-2 h-2 bg-white rounded-full mt-1.5 shadow-[0_0_15px_#ffffff] border border-black" />
         </div>
 
-        {/* Panneau Latéral d'Informations Flottant */}
-        <div class="absolute bottom-4 left-4 right-4 sm:right-auto bg-zinc-950/95 border border-zinc-800 p-4 backdrop-blur-md max-w-xs font-mono text-left text-[11px] space-y-3 shadow-xl">
+        {/* ================= NOUVEAU : CONSOLE DE LOGS SATELLITE EN DIRECT ================= */}
+        <div class="absolute top-4 right-4 bg-zinc-950/90 border border-zinc-800 p-2 font-mono text-[9px] text-zinc-400 hidden md:block max-w-xs shadow-xl backdrop-blur-md">
+          <div class="flex justify-between text-zinc-600 mb-1 font-bold border-b border-zinc-900 pb-0.5">
+            <span>📡 TELEMETRY HUB</span>
+            <span>IDX:{pulseCount}</span>
+          </div>
+          <p class="text-amber-500 font-bold tracking-tight transition-all duration-300">{systemLog}</p>
+        </div>
+
+        {/* Panneau Principal d'Informations */}
+        <div class="absolute bottom-4 left-4 right-4 sm:right-auto bg-black/95 border border-zinc-800 p-4 backdrop-blur-md max-w-xs font-mono text-left text-[11px] space-y-3 shadow-2xl">
           <div class="flex items-center justify-between border-b border-zinc-800 pb-1.5">
             <span class="text-amber-500 font-bold">📍 POSITION RECOGNITION</span>
-            <span class="text-zinc-500 text-[9px]">SYS:3060</span>
+            <span class="text-zinc-600 text-[9px]">GRID.REF</span>
           </div>
-          <p class="text-zinc-300 leading-relaxed">
-            Plage de Mahares, Route de la Mer. À proximité immédiate des structures métalliques et artistiques du projet <span class="text-blue-400 font-bold">Maharès 3060</span>.
+          <p class="text-zinc-400 leading-relaxed">
+            Plage de Mahares, Route de la Mer. Face au port, ancré à la lisière des installations industrielles du pôle artistique <span class="text-white font-bold">Maharès 3060</span>.
           </p>
-          <div class="bg-zinc-900/60 p-2 border border-zinc-800 text-[10px] text-zinc-400 space-y-1">
+          <div class="grid grid-cols-2 gap-2 bg-zinc-950 p-2 border border-zinc-900 text-[10px] text-zinc-500">
             <p>LAT: 34.5228° N</p>
             <p>LONG: 10.5042° E</p>
           </div>
           
           <div class="flex flex-col gap-2 pt-1">
-            {/* Bouton 1 : Déclencher la simulation d'itinéraire (Wow effect) */}
             <button 
               onClick={() => {
                 setIsNavigating(true);
-                setTimeout(() => setIsNavigating(false), 2500);
+                setSystemLog("📡 INTERCEPTING PATHWAY... CALCULATING ETA");
+                setTimeout(() => {
+                  setIsNavigating(false);
+                  setSystemLog("🎯 ARRIVAL VECTOR COMPUTED // ACCESS READY");
+                }, 2200);
               }}
-              class="w-full text-center bg-zinc-800 hover:bg-zinc-700 text-amber-400 py-2 font-bold transition-all uppercase text-[10px] tracking-wider border border-zinc-700"
+              class="w-full text-center bg-zinc-900 hover:bg-zinc-800 text-amber-500 py-2 font-bold transition-all uppercase text-[10px] tracking-wider border border-zinc-800"
             >
-              {isNavigating ? "⚡ Analyse du tracé..." : "🔍 Simuler l'itinéraire"}
+              {isNavigating ? "⚡ SYNCHRONISATION..." : "🔍 Activer le Scanner d'Itinéraire"}
             </button>
 
-            {/* Bouton 2 : Lancer le vrai GPS mobile */}
             <a 
               href={googleMapsUrl}
               target="_blank" 
               rel="noopener noreferrer"
-              class="block w-full text-center bg-amber-500 hover:bg-amber-400 text-black py-2 font-black transition-all uppercase text-[10px] tracking-wider"
+              class="block w-full text-center bg-amber-500 hover:bg-amber-400 text-black py-2 font-black transition-all uppercase text-[10px] tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.2)]"
             >
-              Lancer le GPS (Maps / Waze) ↗
+              Lancer le GPS Direct ↗
             </a>
           </div>
         </div>
