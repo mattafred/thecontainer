@@ -6,13 +6,15 @@ import { motion } from 'framer-motion';
 export default function HeroContainer() {
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <div className="relative h-screen w-full bg-zinc-950 perspective-1000 overflow-hidden">
-      
-      {/* ================= BACKGROUND: MAHARES UNIVERSE ================= */}
+  {/* ================= BACKGROUND: MAHARES UNIVERSE ================= */}
       <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center bg-black">
-        {/* L'image brute avec ses couleurs d'origine éclatantes */}
+        {/* L'image : centrée par défaut sur laptop, décalée intelligemment à 70% sur mobile pour préserver l'artiste et le container rouge */}
         <div 
+          className="absolute inset-0 bg-[url('/images/mahares-bg.jpg')] bg-cover bg-[70%_center] md:bg-center opacity-100"
+        />
+        
+        {/* Voile d'ombrage dynamique : plus opaque sur mobile (black/40) pour bloquer les détails agressifs du dessin sous le texte, plus léger sur laptop */}
+        <div className="absolute inset-0 bg-black/45 md:bg-black/25 backdrop-blur-[0.5px]" />
           className="absolute inset-0 bg-[url('/images/mahares-bg.jpg')] bg-cover bg-center opacity-100"
         />
         
