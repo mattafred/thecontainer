@@ -1,87 +1,85 @@
----
-import Layout from '../layouts/Layout.astro';
-import HeroContainer from '../components/HeroContainer';
-import InteractiveMap from '../components/InteractiveMap';
----
+"use client";
 
-<Layout title="The Container | Eat & Drink - Mahares">
-	<main>
-		<!-- Section 1 : Effet Wow Ouverture Container -->
-		<HeroContainer client:load />
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
-		<!-- Section 2 : Menu "Main Cargo" basé sur ton image -->
-		<section id="menu" class="py-20 bg-zinc-950 px-4 border-t border-zinc-900">
-			<div class="max-w-3xl mx-auto">
-				<div class="border-2 border-dashed border-zinc-800 p-6 sm:p-12 bg-zinc-900/40 font-mono text-sm">
-					
-					{/* Header Industriel du Menu */}
-					<div class="flex justify-between border-b border-zinc-800 pb-4 mb-8 text-[11px] text-zinc-500">
-						<div>SYS.ID: TC-RED-06</div>
-						<div class="text-center font-bold text-amber-500">MAIN CARGO // LES BURGERS</div>
-						<div>[SEC.01]</div>
-					</div>
+// Structure de données synchronisée à 100% avec ton affiche physique
+const MENU_ITEMS = {
+  burgers: [
+    { name: "CHICKEN BURGER", price: "12.00 DT" },
+    { name: "CHEESEBURGER", price: "13.00 DT" },
+    { name: "BACON BURGER", price: "15.00 DT" },
+    { name: "BACON EGG", price: "16.00 DT" },
+    { name: "LE DOUBLE [HEAVY LOAD]", price: "18.00 DT", highlight: true },
+  ],
+  supplements: [
+    { name: "SUPPL. CHEDDAR", price: "+2.00 DT" },
+    { name: "SUPPL. STEAK", price: "+5.00 DT" },
+    { name: "SUPPL. CHICKEN", price: "+3.00 DT" },
+  ],
+  sides: [
+    { name: "Portion Frites [CRISPY FRY PACK]", price: "5.00 DT" },
+  ],
+  fluids: [
+    { name: "Soda Frais", price: "3.00 DT" },
+    { name: "Eau Minérale", price: "3.00 DT" },
+    { name: "Mojito Maison", price: "7.00 DT" },
+  ]
+};
 
-					{/* Les Burgers */}
-					<div class="space-y-6">
-						<div class="flex justify-between items-center">
-							<div>
-								<span class="font-bold text-white block">CHICKEN BURGER</span>
-								<span class="text-xs text-zinc-500">Served Fresh & Hot</span>
-							</div>
-							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">12.00 DT</div>
-						</div>
-						<div class="flex justify-between items-center">
-							<div>
-								<span class="font-bold text-white block">CHEESEBURGER</span>
-							</div>
-							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">13.00 DT</div>
-						</div>
-						<div class="flex justify-between items-center">
-							<div>
-								<span class="font-bold text-white block">BACON BURGER</span>
-							</div>
-							<div class="text-amber-400 font-bold border border-amber-500/30 px-2 py-1 bg-amber-500/5">15.00 DT</div>
-						</div>
-						<div class="flex justify-between items-center bg-red-950/20 border border-red-900/40 p-3">
-							<div>
-								<span class="font-bold text-red-400 block">LE DOUBLE [HEAVY LOAD]</span>
-								<span class="text-[11px] text-zinc-400">Double Steak + Double Fromage</span>
-							</div>
-							<div class="text-red-400 font-bold border border-red-500/30 px-2 py-1 bg-red-500/10">18.00 DT</div>
-						</div>
-					</div>
+export default function TheContainerSite() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-					{/* Suppléments */}
-					<div class="mt-12 pt-6 border-t border-zinc-800">
-						<p class="text-xs text-zinc-400 mb-4 font-bold uppercase tracking-wider">+ EXTRA ACCESSORIES // SUPPLÉMENTS</p>
-						<div class="grid grid-cols-2 gap-4 text-xs">
-							<div class="flex justify-between text-zinc-300"><span>SUPPL. CHEDDAR</span> <span class="text-amber-400">+2.00 DT</span></div>
-							<div class="flex justify-between text-zinc-300"><span>SUPPL. STEAK</span> <span class="text-amber-400">+5.00 DT</span></div>
-						</div>
-					</div>
+  // Gestion du scroll pour l'effet d'ouverture 3D du container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-					{/* Lien vers Take.app externe */}
-					<div class="mt-12 text-center">
-						<p class="text-xs text-zinc-500 mb-4">Scannez le QR Code sur table ou cliquez ci-dessous pour commander directement via WhatsApp</p>
-						<a 
-							href="https://take.app/fr/THECONTAINER" 
-							target="_blank" 
-							rel="noopener noreferrer"
-							class="inline-block bg-zinc-100 hover:bg-amber-500 text-black px-8 py-4 font-bold uppercase tracking-wider text-xs transition-colors"
-						>
-							Commandez en Ligne (Take.app)
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
+  const leftDoorRotateY = useTransform(scrollYProgress, [0, 0.4], [0, -115]);
+  const rightDoorRotateY = useTransform(scrollYProgress, [0, 0.4], [0, 115]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.4], [0.85, 1]);
+  const contentOpacity = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
 
-		<!-- Section 3 : Localisation avec radar pulsé -->
-		<InteractiveMap client:visible />
-	</main>
+  return (
+    <main className="bg-zinc-950 text-white min-h-screen font-sans selection:bg-amber-500 selection:text-black">
+      
+      {/* ================= SECTION 1: HERO VIEWPORT (CONTAINER WOW EFFECT) ================= */}
+      <div ref={containerRef} className="relative h-[180vh] bg-neutral-900" style={{ perspective: "1200px" }}>
+        <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
+          
+          {/* ARRIÈRE-PLAN : RÉVÉLATION DE L'UNIVERS MAHARES */}
+          <motion.div 
+            style={{ scale: contentScale, opacity: contentOpacity }}
+            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-orange-600 via-amber-700 to-zinc-950 px-4 text-center"
+          >
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+            
+            <div className="relative z-10 max-w-3xl px-4">
+              <span className="mb-3 block text-xs font-mono tracking-[0.4em] text-amber-300 uppercase animate-pulse">
+                ⚓ Établi à Mahares // Plage
+              </span>
+              <h1 className="text-6xl font-black tracking-tighter md:text-9xl text-white drop-shadow-md">
+                THE CONTAINER
+              </h1>
+              <p className="mx-auto mt-6 max-w-md text-base md:text-lg text-zinc-100 font-light leading-relaxed">
+                Vos burgers premium servis frais et chauds directement depuis le port. Une expérience immersive sur la côte.
+              </p>
+              <div className="mt-10 flex flex-wrap justify-center gap-4">
+                <a href="#menu" className="bg-amber-500 text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-amber-400 hover:tracking-[0.2em]">
+                  Consulter le Cargo (Menu)
+                </a>
+                <a href="#localisation" className="border border-white/40 bg-white/5 backdrop-blur-md text-white px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-white/20">
+                  Cap sur la Carte
+                </a>
+              </div>
+            </div>
+          </motion.div>
 
-	{/* Footer réglementaire industriel */}
-	<footer class="bg-zinc-950 border-t border-zinc-900 py-6 text-center text-[10px] font-mono text-zinc-600 tracking-widest uppercase">
-		▲ DO NOT STACK // SERVED FRESH & HOT DIRECT FROM THE CONTAINER
-	</footer>
-</Layout>
+          {/* PORTE GAUCHE DU CONTAINER */}
+          <motion.div
+            style={{ rotateY: leftDoorRotateY, transformOrigin: "left center" }}
+            className="absolute left-0 top-0 z-20 flex h-full w-1/2 flex-col justify-between border-r-2 border-zinc-950 bg-red-700 p-6 md:p-12 shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.15)_0%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.3)_100%)] pointer-events-none" />
+            <div className="relative z-10 font-mono text-[10px] md:text-xs tracking-widest text-red-200
