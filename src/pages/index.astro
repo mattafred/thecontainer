@@ -30,47 +30,49 @@ const MENU_ITEMS = {
 
 <Layout title="The Container | Eat & Drink - Mahares">
   
-  {/* Ton Hero original préservé à 100% */}
+  {/* Ton Hero original */}
   <HeroContainer client:load />
 
-  {/* SECTION MENU : Accordée sur l'ambre et le zinc très sombre */}
+  {/* SECTION MENU : Purge totale du orange, passage au Rouge Tactique et Blanc */}
   <section id="menu" class="py-24 px-4 max-w-5xl mx-auto scroll-mt-12 bg-zinc-950">
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-5xl font-black tracking-tight uppercase text-white">
-        MAIN CARGO // <span class="text-amber-500">LES BURGERS</span>
+        MAIN CARGO // <span class="text-red-600">LES BURGERS</span>
       </h2>
-      <div class="w-16 h-1 bg-amber-500 mx-auto mt-4"></div>
+      <div class="w-16 h-1 bg-red-600 mx-auto mt-4"></div>
     </div>
 
     <div class="grid md:grid-cols-2 gap-12 items-start">
       
-      <div class="border border-zinc-800 bg-zinc-900/30 p-6 md:p-8 backdrop-blur-sm">
-        <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-amber-500 mb-6 flex justify-between border-b border-zinc-800 pb-2">
+      <!-- Liste des Burgers -->
+      <div class="border border-zinc-900 bg-zinc-900/20 p-6 md:p-8 backdrop-blur-sm">
+        <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-red-500 mb-6 flex justify-between border-b border-zinc-900 pb-2">
           <span>[SEC.01] LES BURGERS</span>
           <span>PRICE</span>
         </h3>
         <div class="space-y-4">
           {MENU_ITEMS.burgers.map((item) => (
-            <div class={`p-4 border transition-all ${item.highlight ? 'bg-amber-950/20 border-amber-600 font-black' : 'bg-zinc-950/60 border-zinc-800 hover:border-amber-500/40'}`}>
+            <div class={`p-4 border transition-all ${item.highlight ? 'bg-red-950/20 border-red-700 font-black' : 'bg-black border-zinc-900 hover:border-red-600/40'}`}>
               <div class="flex justify-between items-center">
                 <span class="text-sm md:text-base tracking-wide font-bold text-zinc-100">{item.name}</span>
-                <span class="font-mono bg-amber-500 text-black text-xs px-2 py-1 font-bold rounded-sm">{item.price}</span>
+                <span class="font-mono bg-red-700 text-white text-xs px-2 py-1 font-bold rounded-sm shadow-[0_0_10px_rgba(185,28,28,0.3)]">{item.price}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
+      <!-- Suppléments & Accompagnements -->
       <div class="space-y-8">
-        <div class="border border-zinc-800 bg-zinc-900/30 p-6 md:p-8 backdrop-blur-sm">
-          <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-amber-500 mb-6 border-b border-zinc-800 pb-2">
+        <div class="border border-zinc-900 bg-zinc-900/20 p-6 md:p-8 backdrop-blur-sm">
+          <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 mb-6 border-b border-zinc-900 pb-2">
             <span>+ EXTRA ACCESSORIES // SUPPLÉMENTS</span>
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {MENU_ITEMS.supplements.map((item) => (
-              <div class="bg-zinc-950 p-3 flex justify-between items-center border border-zinc-800">
-                <span class="text-xs font-mono text-zinc-300 font-semibold">{item.name}</span>
-                <span class="text-xs font-mono font-bold text-amber-500 bg-zinc-900/80 px-2 py-0.5 border border-zinc-800">{item.price}</span>
+              <div class="bg-black p-3 flex justify-between items-center border border-zinc-900">
+                <span class="text-xs font-mono text-zinc-400 font-semibold">{item.name}</span>
+                <span class="text-xs font-mono font-bold text-white bg-zinc-900 px-2 py-0.5 border border-zinc-800">{item.price}</span>
               </div>
             ))}
           </div>
@@ -78,28 +80,28 @@ const MENU_ITEMS = {
 
         <div class="grid sm:grid-cols-2 gap-6">
           {/* Frites */}
-          <div class="border border-zinc-800 bg-zinc-900/30 p-5 backdrop-blur-sm">
-            <h4 class="font-mono text-xs font-bold uppercase tracking-widest text-amber-500 mb-4 border-b border-zinc-800 pb-2">
+          <div class="border border-zinc-900 bg-zinc-900/20 p-5 backdrop-blur-sm">
+            <h4 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4 border-b border-zinc-900 pb-2">
               SIDES
             </h4>
             {MENU_ITEMS.sides.map((item) => (
-              <div class="bg-zinc-950 p-3 border border-zinc-800 rounded-sm">
-                <p class="text-xs font-bold text-zinc-200">{item.name}</p>
-                <p class="text-sm font-mono text-amber-500 font-bold mt-2 text-right">{item.price}</p>
+              <div class="bg-black p-3 border border-zinc-900 rounded-sm">
+                <p class="text-xs font-bold text-zinc-300">{item.name}</p>
+                <p class="text-sm font-mono text-white font-bold mt-2 text-right">{item.price}</p>
               </div>
             ))}
           </div>
 
           {/* Boissons */}
-          <div class="border border-zinc-800 bg-zinc-900/30 p-5 backdrop-blur-sm">
-            <h4 class="font-mono text-xs font-bold uppercase tracking-widest text-amber-500 mb-4 border-b border-zinc-800 pb-2">
+          <div class="border border-zinc-900 bg-zinc-900/20 p-5 backdrop-blur-sm">
+            <h4 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4 border-b border-zinc-900 pb-2">
               FLUIDS
             </h4>
             <div class="space-y-2">
               {MENU_ITEMS.fluids.map((item) => (
-                <div class="flex justify-between items-center text-xs py-1.5 border-b border-zinc-800/40 last:border-0">
-                  <span class="text-zinc-300 font-medium">{item.name}</span>
-                  <span class="font-mono text-amber-500 font-bold bg-zinc-950 px-1.5 py-0.5">{item.price}</span>
+                <div class="flex justify-between items-center text-xs py-1.5 border-b border-zinc-900/40 last:border-0">
+                  <span class="text-zinc-400 font-medium">{item.name}</span>
+                  <span class="font-mono text-white font-bold bg-black px-1.5 py-0.5 border border-zinc-900">{item.price}</span>
                 </div>
               ))}
             </div>
@@ -108,22 +110,22 @@ const MENU_ITEMS = {
       </div>
     </div>
 
-    {/* Section Commande Digitale */}
-    <div class="mt-16 bg-gradient-to-r from-amber-950/30 to-zinc-900 border border-amber-500/20 p-8 text-center max-w-xl mx-auto">
-      <p class="font-mono text-xs uppercase tracking-widest text-amber-500 mb-2">⚡ COMMANDE EN LIGNE</p>
+    {/* Section Commande Digitale Rouge */}
+    <div class="mt-16 bg-gradient-to-r from-red-950/20 to-zinc-900 border border-red-900/40 p-8 text-center max-w-xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-widest text-red-500 mb-2">⚡ COMMANDE EN LIGNE</p>
       <h4 class="text-xl font-bold mb-4 text-white">Commandez directement via notre outil</h4>
       <a 
         href="https://take.app/fr/THECONTAINER" 
         target="_blank" 
         rel="noopener noreferrer" 
-        class="inline-block bg-amber-500 text-black px-8 py-3 text-xs font-mono font-bold uppercase tracking-wider hover:bg-amber-400 transition-colors"
+        class="inline-block bg-red-700 hover:bg-red-600 text-white px-8 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-colors shadow-[0_0_15px_rgba(185,28,28,0.2)]"
       >
         Ouvrir la commande digitale ↗
       </a>
     </div>
   </section>
 
-  {/* SECTION LOCALISATION (Intégration transparente de la carte tactique) */}
+  {/* SECTION LOCALISATION MONOCHROME */}
   <InteractiveMap client:load />
 
 </Layout>
