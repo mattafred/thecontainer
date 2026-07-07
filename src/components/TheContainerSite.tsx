@@ -54,16 +54,16 @@ export default function TheContainerSite() {
             style={{ scale: contentScale, opacity: contentOpacity }}
             className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 px-4 text-center"
           >
-            {/* ILLUSTRATION MODE DESKTOP / TABLETTE (IMAGE ORIGINALE) */}
+            {/* ILLUSTRATION MODE DESKTOP / LAPTOP */}
             <div 
               className="absolute inset-0 hidden md:block bg-cover bg-center opacity-40 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/mahares-original.jpg')" }} // Remplace par le nom exact de ton image originale dans /public
+              style={{ backgroundImage: "url('/bg-desktop.jpg')" }} 
             />
 
-            {/* ILLUSTRATION MODE SMARTPHONE (MAHARES-SF) */}
+            {/* ILLUSTRATION MODE SMARTPHONE */}
             <div 
               className="absolute inset-0 block md:hidden bg-cover bg-center opacity-45 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/mahares-sf.jpg')" }} // Utilise l'image smartphone spécifiée
+              style={{ backgroundImage: "url('/bg-mobile.jpg')" }} 
             />
 
             {/* Overlay dégradé pour garantir la lisibilité du texte */}
@@ -71,13 +71,13 @@ export default function TheContainerSite() {
             
             <div className="relative z-10 max-w-3xl px-4">
               <span className="mb-3 block text-xs font-mono tracking-[0.4em] text-amber-300 uppercase animate-pulse">
-                ⚓ Établi à Mahares // Plage
+                ⚓ Établi à Mahares // Route de la Mer
               </span>
               <h1 className="text-6xl font-black tracking-tighter md:text-9xl text-white drop-shadow-md">
                 THE CONTAINER
               </h1>
               <p className="mx-auto mt-6 max-w-md text-base md:text-lg text-zinc-100 font-light leading-relaxed">
-                Vos burgers premium servis frais et chauds directement depuis le port. Une expérience immersive sur la côte.
+                Vos burgers premium servis frais et chauds directement depuis notre structure industrielle. Une expérience brute et authentique.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
                 <a href="#menu" className="bg-amber-500 text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-amber-400 hover:tracking-[0.2em]">
@@ -243,7 +243,7 @@ export default function TheContainerSite() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tight uppercase">
               LOC // <span className="text-amber-500">NOUS TROUVER</span>
             </h2>
-            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase tracking-widest">Plage de Mahares, Route de la Mer, Tunisie</p>
+            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase tracking-widest">Route de la Mer, Mahares, Tunisie</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 items-stretch">
