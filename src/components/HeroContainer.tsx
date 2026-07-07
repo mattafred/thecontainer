@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -8,26 +10,30 @@ export default function HeroContainer() {
     <div className="relative h-screen w-full bg-zinc-950 perspective-1000 overflow-hidden">
       
       {/* ================= BACKGROUND: MAHARES UNIVERSE ================= */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-orange-500 via-amber-600 to-zinc-950 px-4 text-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center bg-black">
+        {/* L'image brute avec ses couleurs d'origine éclatantes */}
         <div 
-          className="absolute inset-0 bg-[url('/images/mahares-bg.jpg')] bg-cover bg-center opacity-40 mix-blend-overlay"
+          className="absolute inset-0 bg-[url('/images/mahares-bg.jpg')] bg-cover bg-center opacity-100"
         />
         
+        {/* Voile d'ombrage neutre discret (uniquement pour le contraste du texte blanc) */}
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]" />
+        
         <div className="relative z-10 max-w-2xl px-4">
-          <span className="mb-2 block text-xs font-bold tracking-[0.3em] text-amber-300 uppercase font-mono">
+          <span class="mb-2 block text-xs font-bold tracking-[0.3em] text-white uppercase font-mono bg-red-700 inline-block px-2.5 py-0.5 rounded-sm shadow-md">
             MAHARES 3060
           </span>
-          <h1 style={{ fontFamily: 'Oswald, sans-serif' }} className="text-6xl font-black tracking-tight text-white md:text-8xl uppercase">
+          <h1 style={{ fontFamily: 'Oswald, sans-serif' }} className="text-6xl font-black tracking-tight text-white md:text-8xl uppercase drop-shadow-lg">
             THE CONTAINER
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-sm text-zinc-100 font-light">
+          <p className="mx-auto mt-4 max-w-md text-sm text-zinc-100 font-bold drop-shadow-md">
             Burgers Premium & Expérience immersive au bord de la plage.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#menu" className="bg-amber-500 px-8 py-4 text-xs font-bold uppercase tracking-wider text-black transition-transform active:scale-95">
+            <a href="#menu" className="bg-red-700 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white transition-all shadow-[0_0_15px_rgba(185,28,28,0.3)] hover:bg-red-600 active:scale-95">
               Voir le Cargo Menu
             </a>
-            <a href="#localisation" className="border-2 border-white px-8 py-4 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition-transform active:scale-95">
+            <a href="#localisation" className="border-2 border-white px-8 py-4 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition-transform active:scale-95 hover:bg-white/10">
               Localisation
             </a>
           </div>
@@ -76,12 +82,12 @@ export default function HeroContainer() {
         </div>
       </motion.div>
 
-      {/* Bouton d'invitation central (disparaît si ouvert) */}
+      {/* Bouton d'invitation central Rouge Maritime */}
       {!isOpen && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center pointer-events-none">
           <motion.button 
             onClick={() => setIsOpen(true)}
-            className="pointer-events-auto rounded-full bg-amber-500 text-black px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest shadow-2xl animate-bounce"
+            className="pointer-events-auto rounded-none bg-red-700 border border-red-500 text-white px-8 py-4 font-mono text-xs font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(185,28,28,0.5)] animate-bounce"
           >
             OUVRIR LE CONTAINER
           </motion.button>
