@@ -28,7 +28,8 @@ export default function InteractiveMap() {
   }, []);
 
   return (
-    <section id="localisation" className="relative min-h-screen w-full bg-zinc-950 py-12 md:py-20 px-4 flex flex-col items-center justify-center overflow-hidden">
+    // CORRECTION : Utilisation de py-16 md:py-24 à la place de min-h-screen pour respecter le flux naturel du DOM
+    <section id="localisation" className="relative w-full bg-zinc-950 py-16 md:py-24 px-4 flex flex-col items-center justify-center overflow-hidden">
       {/* Grille de fond */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#18181b_1px,transparent_1px),linear-gradient(to_bottom,#18181b_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-50 pointer-events-none" />
 
@@ -46,11 +47,11 @@ export default function InteractiveMap() {
         </p>
       </div>
 
-      {/* Le conteneur adaptatif : flex-col sur mobile, h-auto libre */}
+      {/* Le conteneur adaptatif : flex-col sur mobile, md:aspect-video sur desktop */}
       <div className="relative z-10 w-full max-w-4xl bg-black border-2 border-zinc-900 flex flex-col md:block md:aspect-video shadow-[0_0_50px_rgba(0,0,0,0.9)] overflow-hidden">
         
-        {/* ================= ZONE CARTE / RADAR (Hauteur dédiée sur mobile) ================= */}
-        <div className="relative w-full h-[240px] sm:h-[300px] md:absolute md:inset-0 md:h-full overflow-hidden flex items-center justify-center border-b border-zinc-900 md:border-b-0">
+        {/* ================= ZONE CARTE / RADAR ================= */}
+        <div className="relative w-full h-[280px] sm:h-[350px] md:absolute md:inset-0 md:h-full overflow-hidden flex items-center justify-center border-b border-zinc-900 md:border-b-0">
           
           {/* Réticules gris */}
           <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-900/50" />
@@ -90,7 +91,7 @@ export default function InteractiveMap() {
           </div>
         </div>
 
-        {/* Console de Logs (Masquée sur mobile pour gagner de la place) */}
+        {/* Console de Logs (Masquée sur mobile) */}
         <div className="absolute top-4 right-4 bg-zinc-950/90 border border-zinc-900 p-2 font-mono text-[9px] text-zinc-500 hidden md:block max-w-xs shadow-xl backdrop-blur-md z-20">
           <div className="flex justify-between text-zinc-700 mb-1 font-bold border-b border-zinc-900 pb-0.5">
             <span>📡 TELEMETRY HUB</span>
@@ -100,7 +101,6 @@ export default function InteractiveMap() {
         </div>
 
         {/* ================= PANNEAU D'INFORMATIONS ET BOUTONS ================= */}
-        {/* Mobile: S'empile proprement en bas // Desktop: Flotte en bas à gauche */}
         <div className="relative w-full md:absolute md:bottom-4 md:left-4 z-20 bg-black md:bg-black/95 border-t md:border border-zinc-900 p-5 backdrop-blur-md max-w-full md:max-w-xs font-mono text-left text-[11px] space-y-4 shadow-2xl">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5">
             <span className="text-zinc-400 font-bold">📍 POSITION RECOGNITION</span>
