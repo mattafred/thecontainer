@@ -5,15 +5,15 @@ import { motion } from 'framer-motion';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-// Importation obligatoire des styles Leaflet pour éviter que la carte ne s'affiche n'importe comment
+// Importation obligatoire des styles Leaflet
 import 'leaflet/dist/leaflet.css';
 
-// Configuration d'un marqueur tactique personnalisé (Cercle Ambre) à la place de l'icône bleue par défaut
+// Configuration d'un marqueur tactique personnalisé (Cercle Ambre Pulsant)
 const tacticalIcon = new L.DivIcon({
   className: 'custom-tactical-marker',
-  html: `<div style="position: relative; display: flex; justify-content: center; align-items: center;">
-           <div style="position: absolute; width: 24px; height: 24px; background-color: rgba(245,158,11,0.2); border: 2px solid #f59e0b; border-radius: 50%; animate: pulse 2s infinite;"></div>
-           <div style="width: 8px; height: 8px; background-color: #f59e0b; border-radius: 50%;"></div>
+  html: `<div style="position: relative; display: flex; justify-content: center; align-items: center; width: 30px; height: 30px;">
+           <div style="position: absolute; width: 24px; height: 24px; background-color: rgba(245,158,11,0.2); border: 2px solid #f59e0b; border-radius: 50%; animation: pulse 2s infinite;"></div>
+           <div style="width: 8px; height: 8px; background-color: #f59e0b; border-radius: 50%; z-index: 50;"></div>
          </div>`,
   iconSize: [30, 30],
   iconAnchor: [15, 15]
@@ -22,11 +22,9 @@ const tacticalIcon = new L.DivIcon({
 // Coordonnées exactes de The Container Mahares
 const POSITION: [number, number] = [34.519309, 10.479200];
 
-// Sous-composant pour forcer le thème sombre et verrouiller les interactions si besoin
 function MapController() {
   const map = useMap();
   useEffect(() => {
-    // Force la mise à jour de la taille au chargement
     setTimeout(() => {
       map.invalidateSize();
     }, 400);
@@ -88,33 +86,30 @@ export default function InteractiveMap() {
             zoom={15} 
             zoomControl={false}
             scrollWheelZoom={false}
-            style={{ width: '100%', height: '100%', background: '#09090b' }}
+            style={{ width: '100%', height: '100%', background: '#09090b', zIndex: 1 }}
             className="tactical-map-render"
           >
             <MapController />
-            {/* Couche de tuiles CartoDB Dark Matter (Fonds de carte tactique noir gratuit) */}
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              attribution='&copy; OpenStreetMap'
             />
-            
-            {/* Position du container sur la carte */}
             <Marker position={POSITION} icon={tacticalIcon} />
           </MapContainer>
 
-          {/* Filtre de couleur appliqué sur la carte pour accentuer le côté industriel */}
+          {/* Filtre rouge discret */}
           <div className="absolute inset-0 bg-red-500/5 mix-blend-color pointer-events-none z-20" />
           
-          {/* Réticules de visée superposés sur la carte */}
-          <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-900/30 pointer-events-none z-20" />
-          <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-900/30 pointer-events-none z-20" />
+          {/* Réticules de visée superposés */}
+          <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-800/40 pointer-events-none z-20" />
+          <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-800/40 pointer-events-none z-20" />
           
-          {/* Effet d'affichage de scanner radar discret */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)] pointer-events-none z-20" />
+          {/* Vignettage radar sombre */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.6)_100%)] pointer-events-none z-20" />
         </div>
 
         {/* Console de Telemetrie Hub */}
-        <div className="absolute top-4 right-4 bg-zinc-950/90 border border-zinc-900 p-2 font-mono text-[9px] text-zinc-500 hidden md:block max-w-xs shadow-xl backdrop-blur-md z-20">
+        <div className="absolute top-4 right-4 bg-zinc-950/90 border border-zinc-900 p-2 font-mono text-[9px] text-zinc-500 hidden md:block max-w-xs shadow-xl backdrop-blur-md z-30">
           <div className="flex justify-between text-zinc-700 mb-1 font-bold border-b border-zinc-900 pb-0.5">
             <span>📡 TELEMETRY HUB</span>
             <span>IDX:{pulseCount}</span>
@@ -123,7 +118,7 @@ export default function InteractiveMap() {
         </div>
 
         {/* Panneau d'informations tactiques */}
-        <div className="relative w-full md:absolute md:bottom-4 md:left-4 z-20 bg-black md:bg-black/95 border-t md:border border-zinc-900 p-5 backdrop-blur-md max-w-full md:max-w-xs font-mono text-left text-[11px] space-y-4 shadow-2xl">
+        <div className="relative w-full md:absolute md:bottom-4 md:left-4 z-30 bg-black md:bg-black/95 border-t md:border border-zinc-900 p-5 backdrop-blur-md max-w-full md:max-w-xs font-mono text-left text-[11px] space-y-4 shadow-2xl">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5">
             <span className="text-zinc-400 font-bold">📍 POSITION RECOGNITION</span>
             <span className="text-zinc-700 text-[9px]">GRID.REF</span>
@@ -160,6 +155,14 @@ export default function InteractiveMap() {
         </div>
 
       </div>
+      
+      {/* Styles d'animation CSS injectés pour l'impulsion du marqueur */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes pulse {
+          0% { transform: scale(0.5); opacity: 0.8; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+      `}} />
     </section>
   );
 }

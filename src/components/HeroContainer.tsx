@@ -4,12 +4,29 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function HeroContainer() {
-  const [animationStage, setAnimationStage] = useState("closed"); // closed -> unlocking -> opening
+  // Par défaut, on initialise l'état selon le stockage de session pour éviter les flashs graphiques
+  const [animationStage, setAnimationStage] = useState(() => {
+    if (typeof window !== "undefined") {
+      const hasVisited = sessionStorage.getItem("container_opened");
+      return hasVisited ? "opening" : "closed";
+    }
+    return "closed";
+  });
 
   useEffect(() => {
-    // Séquence automatique au chargement
+    // Si le conteneur a déjà été ouvert pendant cette session, on ne rejoue pas l'animation
+    const hasVisited = sessionStorage.getItem("container_opened");
+    if (hasVisited) {
+      setAnimationStage("opening");
+      return;
+    }
+
+    // Séquence automatique pour la première visite
     const unlockTimer = setTimeout(() => setAnimationStage("unlocking"), 800);
-    const openTimer = setTimeout(() => setAnimationStage("opening"), 1800);
+    const openTimer = setTimeout(() => {
+      setAnimationStage("opening");
+      sessionStorage.setItem("container_opened", "true");
+    }, 1800);
 
     return () => {
       clearTimeout(unlockTimer);
@@ -17,17 +34,17 @@ export default function HeroContainer() {
     };
   }, []);
 
-  // 1. Animation des crémones / poignées (Pivotement initial pour déverrouiller)
+  // 1. Animation des crémones / poignées (Pivotement initial)
   const leftCremoneVariants = {
     closed: { rotateY: 0 },
     unlocking: { rotateY: 90, transition: { duration: 0.8, ease: "easeIn" } },
-    opening: { rotateY: 90, x: -20, opacity: 0.8, transition: { duration: 0.5 } }
+    opening: { rotateY: 90, x: -20, opacity: 0.8, transition: { duration: 0.1 } }
   };
 
   const rightCremoneVariants = {
     closed: { rotateY: 0 },
     unlocking: { rotateY: -90, transition: { duration: 0.8, ease: "easeIn" } },
-    opening: { rotateY: -90, x: 20, opacity: 0.8, transition: { duration: 0.5 } }
+    opening: { rotateY: -90, x: 20, opacity: 0.8, transition: { duration: 0.1 } }
   };
 
   // 2. Animation 3D des panneaux de portes lourds
@@ -55,7 +72,7 @@ export default function HeroContainer() {
       
       {/* ================= ARRIÈRE-PLAN : MAHARES SANS FILTRE ================= */}
       <motion.div 
-        initial="closed"
+        initial={animationStage === "opening" ? "opening" : "closed"}
         animate={animationStage}
         variants={contentVariants}
         className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
@@ -69,7 +86,6 @@ export default function HeroContainer() {
           style={{ backgroundImage: "url('/images/bg-mobile.jpg')" }} 
         />
         
-        {/* Ombrage périphérique pour le texte */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-zinc-950" />
         
         <div className="relative z-10 max-w-3xl px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
@@ -95,7 +111,7 @@ export default function HeroContainer() {
 
       {/* ================= PORTE GAUCHE + MÉCANISME ================= */}
       <motion.div
-        initial="closed"
+        initial={animationStage === "opening" ? "opening" : "closed"}
         animate={animationStage}
         variants={leftDoorVariants}
         style={{ transformOrigin: "left center" }}
@@ -103,32 +119,27 @@ export default function HeroContainer() {
       >
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.15)_0%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.3)_100%)] pointer-events-none" />
         
-        {/* Marquages techniques */}
         <div className="relative z-10 font-mono text-[10px] md:text-xs tracking-widest text-red-100/80 space-y-1">
           <p>SYS.ID: TC-RED-06</p>
           <p>MAX.GR: 30400 KG</p>
           <p>TARE: 2100 KG</p>
         </div>
 
-        {/* MÉCANISME DE LA CRÉMONE GAUCHE */}
         <div className="absolute inset-y-0 right-4 md:right-8 w-6 flex items-center justify-center z-30" style={{ perspective: "400px" }}>
-          {/* Barre en acier verticale */}
           <div className="absolute inset-y-0 w-1 bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 border-x border-black/40 shadow-md" />
-          
-          {/* Poignée rotative interactive mécanique */}
           <motion.div 
             variants={leftCremoneVariants}
             style={{ transformOrigin: "center center" }}
             className="w-12 h-4 bg-zinc-800 rounded-sm border border-zinc-600 flex items-center justify-start shadow-xl"
           >
-            <div className="w-8 h-1 bg-zinc-900 ml-1 rounded-sm shadow-inner" /> {/* Bras levier */}
+            <div className="w-8 h-1 bg-zinc-900 ml-1 rounded-sm shadow-inner" />
           </motion.div>
         </div>
       </motion.div>
 
       {/* ================= PORTE DROITE + MÉCANISME ================= */}
       <motion.div
-        initial="closed"
+        initial={animationStage === "opening" ? "opening" : "closed"}
         animate={animationStage}
         variants={rightDoorVariants}
         style={{ transformOrigin: "right center" }}
@@ -136,25 +147,20 @@ export default function HeroContainer() {
       >
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.3)_0%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.15)_100%)] pointer-events-none" />
         
-        {/* Marquages techniques */}
         <div className="relative z-10 font-mono text-[10px] md:text-xs tracking-widest text-red-200/80 text-right space-y-1">
           <p>NET.CAP: 33.2 CBM</p>
           <p>ORIGIN: TUNISIA</p>
           <p>STATUS: READY</p>
         </div>
 
-        {/* MÉCANISME DE LA CRÉMONE DROITE */}
         <div className="absolute inset-y-0 left-4 md:left-8 w-6 flex items-center justify-center z-30" style={{ perspective: "400px" }}>
-          {/* Barre en acier verticale */}
           <div className="absolute inset-y-0 w-1 bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 border-x border-black/40 shadow-md" />
-          
-          {/* Poignée rotative interactive mécanique */}
           <motion.div 
             variants={rightCremoneVariants}
             style={{ transformOrigin: "center center" }}
             className="w-12 h-4 bg-zinc-800 rounded-sm border border-zinc-600 flex items-center justify-end shadow-xl"
           >
-            <div className="w-8 h-1 bg-zinc-900 mr-1 rounded-sm shadow-inner" /> {/* Bras levier */}
+            <div className="w-8 h-1 bg-zinc-900 mr-1 rounded-sm shadow-inner" />
           </motion.div>
         </div>
         
