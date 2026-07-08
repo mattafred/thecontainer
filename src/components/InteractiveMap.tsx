@@ -2,6 +2,37 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+
+// Importation obligatoire des styles Leaflet pour éviter que la carte ne s'affiche n'importe comment
+import 'leaflet/dist/leaflet.css';
+
+// Configuration d'un marqueur tactique personnalisé (Cercle Ambre) à la place de l'icône bleue par défaut
+const tacticalIcon = new L.DivIcon({
+  className: 'custom-tactical-marker',
+  html: `<div style="position: relative; display: flex; justify-content: center; align-items: center;">
+           <div style="position: absolute; width: 24px; height: 24px; background-color: rgba(245,158,11,0.2); border: 2px solid #f59e0b; border-radius: 50%; animate: pulse 2s infinite;"></div>
+           <div style="width: 8px; height: 8px; background-color: #f59e0b; border-radius: 50%;"></div>
+         </div>`,
+  iconSize: [30, 30],
+  iconAnchor: [15, 15]
+});
+
+// Coordonnées exactes de The Container Mahares
+const POSITION: [number, number] = [34.519309, 10.479200];
+
+// Sous-composant pour forcer le thème sombre et verrouiller les interactions si besoin
+function MapController() {
+  const map = useMap();
+  useEffect(() => {
+    // Force la mise à jour de la taille au chargement
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 400);
+  }, [map]);
+  return null;
+}
 
 export default function InteractiveMap() {
   const [isNavigating, setIsNavigating] = useState(false);
@@ -28,7 +59,6 @@ export default function InteractiveMap() {
   }, []);
 
   return (
-    // CORRECTION : Utilisation de py-16 md:py-24 à la place de min-h-screen pour respecter le flux naturel du DOM
     <section id="localisation" className="relative w-full bg-zinc-950 py-16 md:py-24 px-4 flex flex-col items-center justify-center overflow-hidden">
       {/* Grille de fond */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#18181b_1px,transparent_1px),linear-gradient(to_bottom,#18181b_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-50 pointer-events-none" />
@@ -47,51 +77,43 @@ export default function InteractiveMap() {
         </p>
       </div>
 
-      {/* Le conteneur adaptatif : flex-col sur mobile, md:aspect-video sur desktop */}
+      {/* Le conteneur adaptatif de la carte */}
       <div className="relative z-10 w-full max-w-4xl bg-black border-2 border-zinc-900 flex flex-col md:block md:aspect-video shadow-[0_0_50px_rgba(0,0,0,0.9)] overflow-hidden">
         
-        {/* ================= ZONE CARTE / RADAR ================= */}
-        <div className="relative w-full h-[280px] sm:h-[350px] md:absolute md:inset-0 md:h-full overflow-hidden flex items-center justify-center border-b border-zinc-900 md:border-b-0">
+        {/* ================= ZONE CARTE REAL-TIME DYNAMIQUE SOMBRE ================= */}
+        <div className="relative w-full h-[300px] sm:h-[380px] md:absolute md:inset-0 md:h-full overflow-hidden border-b border-zinc-900 md:border-b-0 z-10">
           
-          {/* Réticules gris */}
-          <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-900/50" />
-          <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-900/50" />
+          <MapContainer 
+            center={POSITION} 
+            zoom={15} 
+            zoomControl={false}
+            scrollWheelZoom={false}
+            style={{ width: '100%', height: '100%', background: '#09090b' }}
+            className="tactical-map-render"
+          >
+            <MapController />
+            {/* Couche de tuiles CartoDB Dark Matter (Fonds de carte tactique noir gratuit) */}
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            />
+            
+            {/* Position du container sur la carte */}
+            <Marker position={POSITION} icon={tacticalIcon} />
+          </MapContainer>
 
-          {/* Radar tournant */}
-          <div className="absolute left-[50%] md:left-[62%] top-[50%] md:top-[54.6%] -translate-x-1/2 -translate-y-1/2 w-[200%] md:w-[150%] aspect-square pointer-events-none">
-            <div className="w-full h-full animate-[spin_10s_linear_infinite] opacity-10" style={{ backgroundImage: 'conic-gradient(from 0deg, rgba(255,255,255,0.2) 0deg, rgba(255,255,255,0) 90deg, transparent 360deg)' }} />
-          </div>
-
-          {/* Ondes Radar */}
-          <div className="absolute left-[50%] md:left-[62%] top-[50%] md:top-[54.6%] flex items-center justify-center pointer-events-none">
-            {[1, 2].map((index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0.4, scale: 0.5 }}
-                animate={{ opacity: 0, scale: 2.2 }}
-                transition={{ duration: 4, repeat: Infinity, delay: index * 2, ease: "linear" }}
-                className="absolute h-36 w-36 rounded-full border border-amber-500/10"
-              />
-            ))}
-          </div>
-
-          {/* MARQUEUR GOURMAND (Burger) */}
-          <div className="absolute left-[50%] md:left-[62%] top-[50%] md:top-[54.6%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-20 group">
-            <div className="w-10 h-6 relative opacity-75 flex justify-center space-x-0.5 mb-0.5">
-              <svg className="w-1.5 h-full text-amber-500/60 animate-[bounce_1.4s_infinite]" viewBox="0 0 20 100" fill="none" stroke="currentColor" strokeWidth="14" strokeLinecap="round"><path d="M10,90 Q20,60 10,30 T10,0" /></svg>
-              <svg className="w-1.5 h-full text-amber-500/80 animate-[bounce_1.7s_infinite_200ms]" viewBox="0 0 20 100" fill="none" stroke="currentColor" strokeWidth="14" strokeLinecap="round"><path d="M10,90 Q0,60 10,30 T10,0" /></svg>
-            </div>
-            <div className="bg-zinc-950 border-2 border-amber-500 text-xl p-2 rounded-full shadow-[0_0_20px_rgba(245,158,11,0.4)]">
-              🍔
-            </div>
-            <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-amber-500 -mt-0.5" />
-            <div className="mt-1.5 bg-red-700 border border-red-500 text-white text-[8px] font-mono px-2 py-0.5 font-black uppercase tracking-wider whitespace-nowrap">
-              📦 THE CONTAINER
-            </div>
-          </div>
+          {/* Filtre de couleur appliqué sur la carte pour accentuer le côté industriel */}
+          <div className="absolute inset-0 bg-red-500/5 mix-blend-color pointer-events-none z-20" />
+          
+          {/* Réticules de visée superposés sur la carte */}
+          <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-zinc-900/30 pointer-events-none z-20" />
+          <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-zinc-900/30 pointer-events-none z-20" />
+          
+          {/* Effet d'affichage de scanner radar discret */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.4)_100%)] pointer-events-none z-20" />
         </div>
 
-        {/* Console de Logs (Masquée sur mobile) */}
+        {/* Console de Telemetrie Hub */}
         <div className="absolute top-4 right-4 bg-zinc-950/90 border border-zinc-900 p-2 font-mono text-[9px] text-zinc-500 hidden md:block max-w-xs shadow-xl backdrop-blur-md z-20">
           <div className="flex justify-between text-zinc-700 mb-1 font-bold border-b border-zinc-900 pb-0.5">
             <span>📡 TELEMETRY HUB</span>
@@ -100,7 +122,7 @@ export default function InteractiveMap() {
           <p className="text-white font-medium tracking-tight">{systemLog}</p>
         </div>
 
-        {/* ================= PANNEAU D'INFORMATIONS ET BOUTONS ================= */}
+        {/* Panneau d'informations tactiques */}
         <div className="relative w-full md:absolute md:bottom-4 md:left-4 z-20 bg-black md:bg-black/95 border-t md:border border-zinc-900 p-5 backdrop-blur-md max-w-full md:max-w-xs font-mono text-left text-[11px] space-y-4 shadow-2xl">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5">
             <span className="text-zinc-400 font-bold">📍 POSITION RECOGNITION</span>
@@ -118,12 +140,12 @@ export default function InteractiveMap() {
             <button 
               onClick={() => {
                 setIsNavigating(true);
-                setSystemLog("📡 INTERCEPTING PATHWAY...");
-                setTimeout(() => setIsNavigating(false), 2000);
+                setSystemLog("📡 RE-INDEXING SATELLITE PATH...");
+                setTimeout(() => setIsNavigating(false), 1500);
               }}
               className="w-full text-center bg-zinc-900 hover:bg-zinc-800 text-white py-3 font-bold transition-all uppercase text-[10px] tracking-wider border border-zinc-800"
             >
-              {isNavigating ? "⚡ SYNCHRONISATION..." : "🔍 Activer le Scanner"}
+              {isNavigating ? "⚡ SYNCHRONISATION..." : "🔍 Recalibrer la zone"}
             </button>
 
             <a 
