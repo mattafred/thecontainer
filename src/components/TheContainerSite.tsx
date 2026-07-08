@@ -33,7 +33,7 @@ export default function TheContainerSite() {
   return (
     <main className="bg-zinc-950 text-white min-h-screen font-sans selection:bg-amber-500 selection:text-black">
       
-      {/* ================= SECTION 1: HERO VIEWPORT (OUVERTURE MÉCANIQUE INTERACTIVE) ================= */}
+      {/* ================= SECTION 1: HERO VIEWPORT ================= */}
       <HeroContainer />
 
       {/* ================= SECTION 2: LE CARGO MENU ================= */}
@@ -136,17 +136,18 @@ export default function TheContainerSite() {
         </div>
       </section>
 
-      {/* ================= SECTION 3: MAP TACTIQUE ET INTÉGRALE DE MAHARES ================= */}
+      {/* ================= SECTION 3: MAP TACTIQUE INTERACTIVE ================= */}
       <InteractiveMap />
 
-      {/* ================= FOOTER : ACCÈS DIRECT AUX RÉSEAUX SOCIAUX ================= */}
-      <footer className="py-12 bg-zinc-950 text-center font-mono text-[10px] text-zinc-600 border-t border-zinc-900">
-        <div className="flex justify-center gap-6 mb-6 text-xs font-bold tracking-widest uppercase">
+      {/* ================= SECTION 4: LE FOOTER (FORCÉ EN SUPERPOSITION OPAQUE) ================= */}
+      <footer className="relative z-30 w-full py-12 bg-zinc-950 text-center font-mono text-[10px] text-zinc-600 border-t border-zinc-900 clear-both block">
+        {/* Liens réseaux sociaux avec couleur de secours blanche pour forcer la visibilité */}
+        <div className="flex justify-center gap-8 mb-6 text-xs font-bold tracking-widest uppercase relative z-40">
           <a 
             href="https://www.instagram.com/thecontainermahares/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-amber-500 transition-colors flex items-center gap-1.5"
+            className="text-zinc-300 hover:text-amber-500 transition-colors duration-200 flex items-center gap-1.5 p-2 bg-zinc-900/50 border border-zinc-800/60 rounded-sm"
           >
             📸 INSTAGRAM ↗
           </a>
@@ -154,13 +155,14 @@ export default function TheContainerSite() {
             href="https://www.facebook.com/thecontainermahares" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-blue-500 transition-colors flex items-center gap-1.5"
+            className="text-zinc-300 hover:text-blue-500 transition-colors duration-200 flex items-center gap-1.5 p-2 bg-zinc-900/50 border border-zinc-800/60 rounded-sm"
           >
             👥 FACEBOOK ↗
           </a>
         </div>
-        <p>© 2026 THE CONTAINER - MAHARES // ROUTE DE LA MER. TOUS DROITS RÉSERVÉS.</p>
+        <p className="text-zinc-500 tracking-wider">© 2026 THE CONTAINER - MAHARES // ROUTE DE LA MER. TOUS DROITS RÉSERVÉS.</p>
       </footer>
+
     </main>
   );
 }
