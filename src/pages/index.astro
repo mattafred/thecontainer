@@ -30,7 +30,7 @@ const MENU_ITEMS = {
 
 <Layout title="The Container | Eat & Drink - Mahares">
   
-  {/* Ton Hero original */}
+  {/* Ton Hero mécanique interactif */}
   <HeroContainer client:load />
 
   {/* SECTION MENU : Purge totale du orange, passage au Rouge Tactique et Blanc */}
@@ -44,7 +44,6 @@ const MENU_ITEMS = {
 
     <div class="grid md:grid-cols-2 gap-12 items-start">
       
-      <!-- Liste des Burgers -->
       <div class="border border-zinc-900 bg-zinc-900/20 p-6 md:p-8 backdrop-blur-sm">
         <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-red-500 mb-6 flex justify-between border-b border-zinc-900 pb-2">
           <span>[SEC.01] LES BURGERS</span>
@@ -62,7 +61,6 @@ const MENU_ITEMS = {
         </div>
       </div>
 
-      <!-- Suppléments & Accompagnements -->
       <div class="space-y-8">
         <div class="border border-zinc-900 bg-zinc-900/20 p-6 md:p-8 backdrop-blur-sm">
           <h3 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 mb-6 border-b border-zinc-900 pb-2">
@@ -125,7 +123,30 @@ const MENU_ITEMS = {
     </div>
   </section>
 
-  {/* SECTION LOCALISATION MONOCHROME */}
+  {/* SECTION LOCALISATION MONOCHROME AVEC LE BURGER QUI FUME */}
   <InteractiveMap client:load />
+
+  {/* ================= LE FOOTER CORRIGÉ ET ENFIN VISIBLE ================= */}
+  <footer class="relative z-30 w-full py-12 bg-zinc-950 text-center font-mono text-[10px] text-zinc-600 border-t border-zinc-900 block">
+    <div class="flex justify-center gap-6 mb-6 text-xs font-bold tracking-widest uppercase">
+      <a 
+        href="https://www.instagram.com/thecontainermahares/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="text-zinc-400 hover:text-amber-500 transition-colors flex items-center gap-1.5 p-2 bg-zinc-900/50 border border-zinc-800/60 rounded-sm"
+      >
+        📸 INSTAGRAM ↗
+      </a>
+      <a 
+        href="https://www.facebook.com/thecontainermahares" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="text-zinc-400 hover:text-blue-500 transition-colors flex items-center gap-1.5 p-2 bg-zinc-900/50 border border-zinc-800/60 rounded-sm"
+      >
+        👥 FACEBOOK ↗
+      </a>
+    </div>
+    <p class="text-zinc-500 tracking-wider">© 2026 THE CONTAINER - MAHARES // ROUTE DE LA MER. TOUS DROITS RÉSERVÉS.</p>
+  </footer>
 
 </Layout>
