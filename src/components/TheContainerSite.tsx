@@ -1,9 +1,10 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import React from 'react';
+import HeroContainer from "./HeroContainer";
+import InteractiveMap from "./InteractiveMap";
 
-// Structure de données complète (Menu + Suppléments mis à jour)
+// Structure de données complète du menu
 const MENU_ITEMS = {
   burgers: [
     { name: "CHICKEN BURGER", price: "12.00 DT" },
@@ -29,112 +30,11 @@ const MENU_ITEMS = {
 };
 
 export default function TheContainerSite() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Gestion du scroll pour l'effet d'ouverture 3D du container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const leftDoorRotateY = useTransform(scrollYProgress, [0, 0.4], [0, -115]);
-  const rightDoorRotateY = useTransform(scrollYProgress, [0, 0.4], [0, 115]);
-  const contentScale = useTransform(scrollYProgress, [0, 0.4], [0.85, 1]);
-  const contentOpacity = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
-
   return (
     <main className="bg-zinc-950 text-white min-h-screen font-sans selection:bg-amber-500 selection:text-black">
       
-      {/* ================= SECTION 1: HERO VIEWPORT (CONTAINER WOW EFFECT) ================= */}
-      <div ref={containerRef} className="relative h-[180vh] bg-neutral-900" style={{ perspective: "1200px" }}>
-        <div className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden">
-          
-          {/* ARRIÈRE-PLAN : RÉVÉLATION DE L'UNIVERS MAHARES */}
-          <motion.div 
-            style={{ scale: contentScale, opacity: contentOpacity }}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 px-4 text-center"
-          >
-            {/* ILLUSTRATION MODE DESKTOP / LAPTOP */}
-            <div 
-              className="absolute inset-0 hidden md:block bg-cover bg-center opacity-40 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/images/bg-desktop.jpg')" }} 
-            />
-
-            {/* ILLUSTRATION MODE SMARTPHONE */}
-            <div 
-              className="absolute inset-0 block md:hidden bg-cover bg-center opacity-45 mix-blend-luminosity transition-all duration-300"
-              style={{ backgroundImage: "url('/images/bg-mobile.jpg')" }} 
-            />
-
-            {/* Overlay dégradé pour garantir la lisibilité du texte */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-red-950/20 to-zinc-950" />
-            
-            <div className="relative z-10 max-w-3xl px-4">
-              <span className="mb-3 block text-xs font-mono tracking-[0.4em] text-amber-300 uppercase animate-pulse">
-                ⚓ Établi à Mahares // Route de la Mer
-              </span>
-              <h1 className="text-6xl font-black tracking-tighter md:text-9xl text-white drop-shadow-md">
-                THE CONTAINER
-              </h1>
-              <p className="mx-auto mt-6 max-w-md text-base md:text-lg text-zinc-100 font-light leading-relaxed">
-                Vos burgers premium servis frais et chauds directement depuis notre structure industrielle. Une expérience brute et authentique.
-              </p>
-              <div className="mt-10 flex flex-wrap justify-center gap-4">
-                <a href="#menu" className="bg-amber-500 text-black px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-amber-400 hover:tracking-[0.2em]">
-                  Consulter le Cargo (Menu)
-                </a>
-                <a href="#localisation" className="border border-white/40 bg-white/5 backdrop-blur-md text-white px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all hover:bg-white/20">
-                  Cap sur la Carte
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* PORTE GAUCHE DU CONTAINER */}
-          <motion.div
-            style={{ rotateY: leftDoorRotateY, transformOrigin: "left center" }}
-            className="absolute left-0 top-0 z-20 flex h-full w-1/2 flex-col justify-between border-r-2 border-zinc-950 bg-red-700 p-6 md:p-12 shadow-2xl"
-          >
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.15)_0%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.3)_100%)] pointer-events-none" />
-            <div className="relative z-10 font-mono text-[10px] md:text-xs tracking-widest text-red-200/80 space-y-1">
-              <p>SYS.ID: TC-RED-06</p>
-              <p>MAX.GR: 30400 KG</p>
-              <p>TARE: 2100 KG</p>
-            </div>
-            <div className="relative z-10 flex items-center justify-end h-full">
-              <div className="h-40 w-3 bg-zinc-900 rounded-sm border-l border-zinc-700/50 shadow-lg" />
-            </div>
-          </motion.div>
-
-          {/* PORTE DROITE DU CONTAINER */}
-          <motion.div
-            style={{ rotateY: rightDoorRotateY, transformOrigin: "right center" }}
-            className="absolute right-0 top-0 z-20 flex h-full w-1/2 flex-col justify-between bg-red-700 p-6 md:p-12 shadow-2xl"
-          >
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.3)_0%,rgba(255,255,255,0.05)_50%,rgba(0,0,0,0.15)_100%)] pointer-events-none" />
-            <div className="relative z-10 font-mono text-[10px] md:text-xs tracking-widest text-red-200/80 text-right space-y-1">
-              <p>NET.CAP: 33.2 CBM</p>
-              <p>ORIGIN: TUNISIA</p>
-              <p>STATUS: READY</p>
-            </div>
-            <div className="relative z-10 flex items-center justify-start h-full">
-              <div className="h-40 w-3 bg-zinc-900 rounded-sm border-r border-zinc-700/50 shadow-lg" />
-            </div>
-            <div className="relative z-10 text-right font-mono text-[10px] md:text-xs text-zinc-950 font-black tracking-wider">
-              <p>▲ DO NOT STACK</p>
-            </div>
-          </motion.div>
-
-          {/* INDICATEUR DE SCROLL */}
-          <div className="absolute bottom-8 z-30 flex flex-col items-center animate-bounce text-white/40 text-[10px] font-mono tracking-[0.3em]">
-            <span>SCROLLEZ POUR OUVRIR</span>
-            <svg className="w-4 h-4 mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-
-        </div>
-      </div>
+      {/* ================= SECTION 1: HERO VIEWPORT (OUVERTURE MÉCANIQUE INTERACTIVE) ================= */}
+      <HeroContainer />
 
       {/* ================= SECTION 2: LE CARGO MENU ================= */}
       <section id="menu" className="py-24 px-4 max-w-5xl mx-auto scroll-mt-12">
@@ -236,60 +136,30 @@ export default function TheContainerSite() {
         </div>
       </section>
 
-      {/* ================= SECTION 3: IMMERSIVE LOCALISATION ================= */}
-      <section id="localisation" className="py-24 bg-zinc-900/40 border-t border-zinc-900 scroll-mt-12">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight uppercase">
-              LOC // <span className="text-amber-500">NOUS TROUVER</span>
-            </h2>
-            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase tracking-widest">Route de la Mer, Mahares, Tunisie</p>
-          </div>
+      {/* ================= SECTION 3: MAP TACTIQUE ET INTÉGRALE DE MAHARES ================= */}
+      <InteractiveMap />
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
-            {/* HORAIRES */}
-            <div className="bg-zinc-950 border border-zinc-800 p-8 flex flex-col justify-between">
-              <div>
-                <span className="text-amber-500 font-mono text-xs block mb-4">[STATUS: OPEN]</span>
-                <h3 className="text-2xl font-bold mb-6">Heures de Service</h3>
-                <div className="space-y-4 font-mono text-sm text-zinc-300">
-                  <div className="flex justify-between py-1 border-b border-zinc-900">
-                    <span>Lundi - Dimanche</span>
-                    <span className="text-white">12:00 - 22:00</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-8 pt-6 border-t border-zinc-900">
-                <a 
-                  href="https://maps.google.com/?q=The+Container+Mahares" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full text-center block bg-zinc-900 border border-zinc-700 text-white font-mono text-xs font-bold uppercase py-4 tracking-wider hover:bg-zinc-800 transition-colors"
-                >
-                  Ouvrir l'itinéraire GPS ↗
-                </a>
-              </div>
-            </div>
-
-            {/* VRAIE CARTE GOOGLE MAPS INTEGREE */}
-            <div className="md:col-span-2 relative h-[380px] md:h-auto bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center min-h-[350px]">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3287.3519746297484!2d10.479200676331295!3d34.519309492923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12ffdb74e27ce321%3A0x2fe0fa7b24c2d071!2sThe%20Container!5e0!3m2!1sfr!2stn!4v1783424741855!5m2!1sfr!2stn" 
-                className="absolute inset-0 w-full h-full grayscale invert opacity-75 contrast-125 hover:grayscale-0 hover:invert-0 hover:opacity-100 transition-all duration-500"
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
-            </div>
-          </div>
+      {/* ================= FOOTER : ACCÈS DIRECT AUX RÉSEAUX SOCIAUX ================= */}
+      <footer className="py-12 bg-zinc-950 text-center font-mono text-[10px] text-zinc-600 border-t border-zinc-900">
+        <div className="flex justify-center gap-6 mb-6 text-xs font-bold tracking-widest uppercase">
+          <a 
+            href="https://www.instagram.com/thecontainermahares/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-amber-500 transition-colors flex items-center gap-1.5"
+          >
+            📸 INSTAGRAM ↗
+          </a>
+          <a 
+            href="https://www.facebook.com/thecontainermahares" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-blue-500 transition-colors flex items-center gap-1.5"
+          >
+            👥 FACEBOOK ↗
+          </a>
         </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-8 text-center font-mono text-[10px] text-zinc-600 border-t border-zinc-900">
-        <p>© {new Date().getFullYear()} UN CONCEPT PAR THE CONTAINER - MAHARES. TOUS DROITS RÉSERVÉS.</p>
+        <p>© 2026 THE CONTAINER - MAHARES // ROUTE DE LA MER. TOUS DROITS RÉSERVÉS.</p>
       </footer>
     </main>
   );
